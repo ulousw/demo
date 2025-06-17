@@ -1,0 +1,134 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace хуйня_ебаная
+{
+    public partial class AddForm : Form
+    {
+        public DataRow CurrentProduct {  get; set; }
+        public AddForm()
+        {
+            InitializeComponent();
+        }
+        private void AddForm_Load(object sender, EventArgs e)
+        {
+            if (CurrentProduct != null && CurrentProduct.RowState != DataRowState.Added)
+            {
+                InputInfo();
+            }
+            else
+            {
+                ClearInfo();
+            }
+        }
+        private void button1_Click(object sender, EventArgs e)
+        {
+            CurrentProduct["Tip_partnera"] = textBox1.Text;
+            CurrentProduct["Naimenovanie_partnera"] = textBox2.Text;
+            CurrentProduct["Director"] = textBox3.Text;
+            CurrentProduct["Electronnaya_pochta_partnera"] = textBox4.Text;
+            CurrentProduct["Telefon_partnera"] = textBox5.Text;
+            CurrentProduct["Uridicheskiy_adres_partnera"] = textBox6.Text;
+            CurrentProduct["INN"] = textBox7.Text;
+            CurrentProduct["Reyting"] = textBox8.Text;
+
+            this.DialogResult = DialogResult.OK ;  
+            this.Close(); 
+        }
+         private void InputInfo()
+        {
+            textBox1.Text = CurrentProduct["Tip_partnera"].ToString();
+            textBox2.Text = CurrentProduct["Naimenovanie_partnera"].ToString();
+            textBox3.Text = CurrentProduct["Director"].ToString();
+            textBox4.Text = CurrentProduct["Electronnaya_pochta_partnera"].ToString();
+            textBox5.Text = CurrentProduct["Telefon_partnera"].ToString();
+            textBox6.Text = CurrentProduct["Uridicheskiy_adres_partnera"].ToString();
+            textBox7.Text = CurrentProduct["INN"].ToString();
+            textBox8.Text = CurrentProduct["Reyting"].ToString();
+        }
+        private void ClearInfo()
+        {
+            textBox1.Text = "";
+            textBox2.Text = "";
+            textBox3.Text = "";
+            textBox4.Text = "";
+            textBox5.Text = "";
+            textBox6.Text = "";
+            textBox7.Text = "";
+            textBox8.Text = "";
+        }
+
+    }
+}
+
+ADDFORM
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Security.Policy;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace хуйня_ебаная
+{
+    public partial class AdminForm : Form
+    {
+        public AdminForm()
+        {
+            InitializeComponent();
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            this.partners_importTableAdapter.Fill(this.levTest1DataSet.Partners_import);
+
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+           DataRow one = levTest1DataSet.Partners_import.NewRow(); //правая
+           AddForm two = new AddForm();
+
+            two.CurrentProduct = one;
+            if (two.ShowDialog() == DialogResult.OK)
+            {
+                levTest1DataSet.Partners_import.Rows.Add(one); //правкая + .Rows
+                this.Validate();
+                this.partnersimportBindingSource.EndEdit(); //datagridvew
+                this.partners_importTableAdapter.Update(levTest1DataSet.Partners_import); //левая + update + правая
+                this.partners_importTableAdapter.Fill(this.levTest1DataSet.Partners_import); //вся
+            }
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            DataRowView three = (DataRowView)partnersimportBindingSource.Current;// dtg
+            DataRow Four = three.Row;
+
+            AddForm two = new AddForm();
+            two.CurrentProduct = Four;
+
+            if (two.ShowDialog() == DialogResult.OK)
+            {
+                this.Validate();
+                this.partnersimportBindingSource.EndEdit();
+                this.partners_importTableAdapter.Update(levTest1DataSet.Partners_import);
+                this.partners_importTableAdapter.Fill(this.levTest1DataSet.Partners_import);
+            }
+        }
+    }
+}
+
+
+ADMIN
