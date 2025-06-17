@@ -1,0 +1,51 @@
+Вот минимальные блоки кода для кнопок:
+1. Кнопка сохранения (сохраняет все изменения в DataGridView):
+
+private void btnSave_Click(object sender, EventArgs e)
+{
+    dataGridView1.EndEdit();
+    MessageBox.Show("Данные сохранены");
+}
+
+2. Кнопка добавления новой строки:
+private void btnAdd_Click(object sender, EventArgs e)
+{
+    dataGridView1.Rows.Add();
+}
+
+3. Кнопка удаления строки:
+private void btnDelete_Click(object sender, EventArgs e)
+{
+    if (dataGridView1.CurrentRow != null && !dataGridView1.CurrentRow.IsNewRow)
+    {
+     dataGridView1.Rows.Remove(dataGridView1.CurrentRow);
+    }
+}
+
+4. Кнопка выхода:
+private void btnExit_Click(object sender, EventArgs e)
+{
+    this.Close();
+}
+
+5. Настройка DataGridView (добавьте в конструктор формы):
+// Разрешаем добавление/удаление строк
+dataGridView1.AllowUserToAddRows = true;
+dataGridView1.AllowUserToDeleteRows = true;
+
+// Редактирование по клику
+dataGridView1.EditMode = DataGridViewEditMode.EditOnKeystrokeOrF2;
+
+// Простое сообщение
+MessageBox.Show("Текст сообщения");
+
+открытие другой формы:
+
+private void btnOpenForm_Click(object sender, EventArgs e)
+{
+    // Создаем экземпляр новой формы
+    SecondForm secondForm = new SecondForm();
+    
+    // Показываем новую форму
+    secondForm.Show();
+}
